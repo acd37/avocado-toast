@@ -10,8 +10,8 @@ module.exports = function (sequelize, Sequelize) {
             allowNull: false
         },
         amount: {
-            type: Sequelize.INTEGER,
-            allowNull: false
+            type: Sequelize.DECIMAL(10, 2),
+            defaultValue: 0.00
         }
     });
 

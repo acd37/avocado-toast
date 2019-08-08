@@ -20,15 +20,15 @@ module.exports = function (app) {
 
         db.Transaction.create(newTransaction)
             .then(transaction => {
-                db.User.findOne({
+                db.Category.findOne({
                     where: {
-                        id: req.body.UserId
+                        category_id: req.body.CategoryId
                     }
-                }).then(user => {
-                    if (user) {
-                        let newBalance = parseFloat(user.remainingBalance) + parseFloat(req.body.amount);
-                        user.update({
-                            remainingBalance: newBalance
+                }).then(category => {
+                    if (category) {
+                        let newBalance = parseFloat(category.amount) + parseFloat(req.body.amount);
+                        category.update({
+                            amount: newBalance
                         })
                     }
 

@@ -22,7 +22,6 @@ module.exports = function (app) {
             } else {
                 const newCategory = {
                     description: req.body.description,
-                    amount: req.body.amount,
                     UserId: req.body.UserId
                 };
 
@@ -51,20 +50,67 @@ module.exports = function (app) {
             .catch(err => console.log(err));
     })
 
-    // UPDATE
+    // @route PUT api/categories/load
+    // @desc  moves funds to a category from unbudgeted amount (user.remainingBalance)
+    app.put("/api/categories/load", (req, res) => {
+        db.Category.findOne({
+            where: {
+                category_id: req.body.category_id
+            }
+        }).then(category => {
+
+            let newBalance = parseFloat(category.amount) + parseFloat(req.body.transferAmount);
+            category.update({
+                amount: newBalance
+            })
+
+            db.User.findOne({
+                where: {
+                    id: category.UserId
+                }
+            }).then(user => {
+                let newBalance = parseFloat(user.remainingBalance) - parseFloat(req.body.transferAmount);
+                user.update({
+                    remainingBalance: newBalance
+                })
+
+                res.status(200).json({
+                    msg: "Balance successfully updated."
+                })
+            })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+            .catch(err => {
+                console.log(err)
+            })
+    })
+
 
 
     // @route DELETE api/categories/
     // @desc deletes a category
     app.delete('/api/categories', (req, res) => {
-        db.Category.destroy({
+        db.Category.findOne({
             where: {
                 category_id: req.body.category_id
             }
         })
-            .then(() => {
-                res.status(200).json({ admin: "Category was successfully deleted." })
+            .then(category => {
+                db.User.findOne({
+                    where: {
+                        id: req.body.user_id
+                    }
+                }).then(user => {
+                    let newBalance = parseFloat(user.remainingBalance) + parseFloat(category.amount);
+
+                    user.update({
+                        remainingBalance: newBalance
+                    })
+                    res.status(200).json({ admin: "Category was successfully deleted and remaining funds  were transferred to to-be-budgeted." })
+                })
+                category.destroy();
             })
     })
-
 }
