@@ -1,6 +1,6 @@
 module.exports = function (app) {
     const db = require("../../models");
-    const Sequelize = require("sequelize");
+    const passport = require('passport');
 
     // @route GET categories/test
     app.get("/api/categories/test", (req, res) =>
@@ -9,7 +9,7 @@ module.exports = function (app) {
 
     // @route POST api/categories/
     // @desc creates a new category
-    app.post("/api/categories", (req, res) => {
+    app.post("/api/categories", passport.authenticate('jwt', { session: false }), (req, res) => {
 
         db.Category.findOne({
             where: {
@@ -38,7 +38,7 @@ module.exports = function (app) {
 
     // @route GET api/categories/:userId/
     // @desc gets all categories  for a particular user
-    app.get("/api/categories/:userId", (req, res) => {
+    app.get("/api/categories/:userId", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Category.findAll({
             where: {
                 UserId: req.params.userId,
@@ -52,7 +52,7 @@ module.exports = function (app) {
 
     // @route PUT api/categories/load
     // @desc  moves funds to a category from unbudgeted amount (user.remainingBalance)
-    app.put("/api/categories/load", (req, res) => {
+    app.put("/api/categories/load", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Category.findOne({
             where: {
                 category_id: req.body.category_id
@@ -91,7 +91,7 @@ module.exports = function (app) {
 
     // @route DELETE api/categories/
     // @desc deletes a category
-    app.delete('/api/categories', (req, res) => {
+    app.delete('/api/categories', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Category.findOne({
             where: {
                 category_id: req.body.category_id

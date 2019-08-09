@@ -1,10 +1,10 @@
 module.exports = function (app) {
     const bcrypt = require("bcryptjs");
     const db = require("../../models");
-    const Sequelize = require("sequelize");
-
+    const passport = require('passport');
 
     // @route GET users/test
+    // @desc tests the  users route
     app.get("/api/users/test", (req, res) =>
         res.json({ msg: "Users routes works!" })
     );
@@ -40,24 +40,13 @@ module.exports = function (app) {
                     });
                 });
             }
-        });
+        })
     });
+
 
     // @route GET /api/users/:userId
     // @desc get a user by id
-
-    // include: [ {
-    //     model: m.message, as: 'groupMessages',
-    //     attributes: ['id','message', 'type', 'thumb', 'createdAt','senderId'],
-    //     include: [ {
-    //         model: m.userMessage, as: 'messageState',
-    //         attributes: ['id','state', 'messageId', 'recieverId', 'createdAt']
-    //     }],
-    //     limit:1
-    // }],
-
-
-    app.get("/api/users/", (req, res) => {
+    app.get("/api/users/", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.findOne({
             where: {
                 id: req.body.id,
@@ -74,11 +63,9 @@ module.exports = function (app) {
     })
 
 
-    // UPDATE
-
     // @route PUT /api/users/reset
     // @desc reset the remaining balance user selection
-    app.put('/api/users', (req, res) => {
+    app.put('/api/users', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.findOne({
             where: {
                 id: req.body.id
@@ -103,7 +90,7 @@ module.exports = function (app) {
 
     // @route DELETE /api/users
     // @desc delete a user
-    app.delete('/api/users', (req, res) => {
+    app.delete('/api/users', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.destroy({
             where: {
                 id: req.body.id

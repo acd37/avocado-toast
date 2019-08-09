@@ -1,6 +1,6 @@
 module.exports = function (app) {
     const db = require("../../models");
-    const Sequelize = require("sequelize");
+    const passport = require('passport');
 
     // @route GET categories/test
     app.get("/api/transactions/test", (req, res) =>
@@ -10,7 +10,7 @@ module.exports = function (app) {
 
     // @route POST api/transactions/
     // @desc creates a new transaction
-    app.post("/api/transactions", (req, res) => {
+    app.post("/api/transactions", passport.authenticate('jwt', { session: false }), (req, res) => {
         const newTransaction = {
             description: req.body.description,
             amount: req.body.amount,
@@ -19,7 +19,7 @@ module.exports = function (app) {
         };
 
         db.Transaction.create(newTransaction)
-            .then(transaction => {
+            .then(() => {
                 db.Category.findOne({
                     where: {
                         category_id: req.body.CategoryId
@@ -39,14 +39,12 @@ module.exports = function (app) {
 
             })
             .catch(err => console.log(err));
-
-
-
     });
+
 
     // @route GET api/transactions/:userId
     // @desc gets all transactions for a user
-    app.get("/api/transactions/all", (req, res) => {
+    app.get("/api/transactions/all", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Transaction.findAll({
             where: {
                 UserId: req.body.UserId,
@@ -56,11 +54,12 @@ module.exports = function (app) {
                 res.status(200).json(transactions)
             })
             .catch(err => console.log(err));
-    })
+    });
+
 
     // @route GET api/transactions/:categoryId/:userId
     // @desc gets all transactions for a user for a particular category
-    app.get("/api/transactions/transaction", (req, res) => {
+    app.get("/api/transactions/transaction", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Transaction.findAll({
             where: {
                 CategoryCategoryId: req.body.CategoryId,
@@ -71,15 +70,12 @@ module.exports = function (app) {
                 res.status(200).json(transactions)
             })
             .catch(err => console.log(err));
-    })
-
-
-    // UPDATE
+    });
 
 
     // @route DELETE api/transactions/
     // @desc deletes a transaction
-    app.delete('/api/transactions', (req, res) => {
+    app.delete('/api/transactions', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.Transaction.destroy({
             where: {
                 transaction_id: req.body.transaction_id
@@ -87,8 +83,8 @@ module.exports = function (app) {
         })
             .then(() => {
                 res.status(200).json({ admin: "Transaction was successfully deleted." })
-            })
-    })
+            });
+    });
 
 
 }
