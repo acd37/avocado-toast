@@ -12,6 +12,7 @@ module.exports = function (app) {
     // @route POST api/users/
     // @desc creates a new user
     app.post("/api/users", (req, res) => {
+
         db.User.findOne({
             where: {
                 email: req.body.email
@@ -34,7 +35,10 @@ module.exports = function (app) {
 
                         db.User.create(newUser)
                             .then(user => {
-                                res.status(200).json({ message: "User account successfully created." })
+                                res.status(200).json({
+                                    message: "User account successfully created.",
+                                    userCreated: true
+                                })
                             })
                             .catch(err => console.log(err));
                     });
