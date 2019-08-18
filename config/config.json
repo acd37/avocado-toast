@@ -1,0 +1,26 @@
+{
+    "development": {
+        "username": "fewvs2ko65tivwik",
+        "password": "m0otwnry9ou6m5yw",
+        "database": "yuqq4kj6tful0naq",
+        "host": "g3v9lgqa8h5nq05o.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        "dialect": "mysql",
+        "logging": false
+    },
+    "test": {
+        "username": "root",
+        "password": "password",
+        "database": "budget_db",
+        "host": "localhost",
+        "dialect": "mysql",
+        "logging": false
+    },
+    "production": {
+        "username": "root",
+        "password": "password",
+        "database": "budget_db",
+        "host": "localhost",
+        "dialect": "mysql",
+        "logging": false
+    }
+}
