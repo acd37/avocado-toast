@@ -54,11 +54,6 @@ module.exports = function (app) {
                                 id: user.id,
                                 firstName: user.firstName,
                                 lastName: user.lastName,
-                                email: user.email,
-                                monthlyIncome: user.monthlyIncome,
-                                remainingBalance: user.remainingBalance,
-                                transactions: user.Transactions,
-                                categories: user.Categories
                             };
 
                             // sign the token
@@ -84,6 +79,29 @@ module.exports = function (app) {
             });
         });
     });
+
+
+    // @route GET api/users
+    // @desc gets a user by id
+    app.get('/api/users', passport.authenticate('jwt', { session: false }),
+        (req, res) => {
+            db.User.findOne({
+                where: {
+                    id: req.body.id
+                }
+            }).then(user => {
+                res.json({
+                    id: user.id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    transactions: user.transactions,
+                    categories: user.categories,
+                    email: user.email
+                })
+            })
+
+        })
+
 
 
 }

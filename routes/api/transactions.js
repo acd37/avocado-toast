@@ -32,7 +32,20 @@ module.exports = function (app) {
                         })
                     }
 
-                    res.status(200).json({ message: "Transaction successfully recorded." })
+                    db.User.findOne({
+                        where: {
+                            id: req.body.UserId,
+                        },
+                        include: [
+                            { model: db.Transaction },
+                            { model: db.Category }
+                        ]
+                    })
+                        .then(user => {
+                            console.log(user)
+                            res.status(200).json(user)
+                        })
+                        .catch(err => console.log(err));
                 }).catch(err => {
                     console.log(err);
                 })

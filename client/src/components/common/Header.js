@@ -15,7 +15,7 @@ class Header extends Component {
     render() {
         return (
             <h1 style={styles.header}>
-                Hi, {this.props.user.firstName}!
+                {this.props.text}
             </h1>
         )
     }

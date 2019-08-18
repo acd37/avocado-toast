@@ -9,6 +9,39 @@ module.exports = function (app) {
         res.json({ msg: "Users routes works!" })
     );
 
+    // @route PUT  api/users/income
+    // @desc adds income to user profile
+
+    app.put('/api/users/income', passport.authenticate('jwt', { session: false }), (req, res) => {
+
+        db.User.findOne({
+            where: {
+                id: req.user.id
+            }
+        }).then(user => {
+            let newBalance = parseFloat(user.remainingBalance) + parseFloat(req.body.amount)
+            db.User.update(
+                { remainingBalance: newBalance },
+                {
+                    where: {
+                        id: req.user.id
+                    }
+                }).then(() => {
+                    db.User.findOne({
+                        where: {
+                            id: req.user.id
+                        },
+                        include: [
+                            { model: db.Transaction },
+                            { model: db.Category }
+                        ]
+                    }).then(user => {
+                        res.status(200).json(user)
+                    })
+                })
+        })
+    })
+
     // @route POST api/users/
     // @desc creates a new user
     app.post("/api/users", (req, res) => {
@@ -48,12 +81,12 @@ module.exports = function (app) {
     });
 
 
-    // @route GET /api/users/:userId
+    // @route GET /api/users
     // @desc get a user by id
     app.get("/api/users/", passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.findOne({
             where: {
-                id: req.body.id,
+                id: req.user.id,
             },
             include: [
                 { model: db.Transaction },
@@ -67,7 +100,7 @@ module.exports = function (app) {
     })
 
 
-    // @route PUT /api/users/reset
+    // @route PUT /api/users/
     // @desc reset the remaining balance user selection
     app.put('/api/users', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.findOne({
@@ -97,7 +130,7 @@ module.exports = function (app) {
     app.delete('/api/users', passport.authenticate('jwt', { session: false }), (req, res) => {
         db.User.destroy({
             where: {
-                id: req.body.id
+                id: req.user.id
             }
         })
             .then(() => {
@@ -108,3 +141,4 @@ module.exports = function (app) {
             })
     })
 }
+

@@ -83,17 +83,18 @@ class AppDrawer extends Component {
                             <ListItemText primary="Budget" />
                         </ListItem>
                     </Link>
+
+                    <Link className={classes.link} to="/dashboard/transactions">
+                        <ListItem button >
+                            <AttachMoney style={{ marginRight: 16 }} />
+                            <ListItemText primary="Transactions" />
+                        </ListItem>
+                    </Link>
                     <Link className={classes.link} to="/dashboard/settings">
                         <ListItem button >
                             <Settings style={{ marginRight: 16 }} />
 
                             <ListItemText primary="Settings" />
-                        </ListItem>
-                    </Link>
-                    <Link className={classes.link} to="/dashboard/transactions">
-                        <ListItem button >
-                            <AttachMoney style={{ marginRight: 16 }} />
-                            <ListItemText primary="Transactions" />
                         </ListItem>
                     </Link>
 

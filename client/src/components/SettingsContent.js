@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
+import Header from './common/Header';
+import { connect } from 'react-redux';
+
 
 class SettingsContent extends Component {
     render() {
         return (
             <div>
-                Settings Content
+                <Header text="Settings" />
             </div>
         )
     }
 }
 
+const mapStateToProps = state => ({
+    auth: state.auth,
+    loading: state.auth.loading,
+    profile: state.profile
+})
 
-export default SettingsContent;
+export default connect(mapStateToProps, {})(SettingsContent);
