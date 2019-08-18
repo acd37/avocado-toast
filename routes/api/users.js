@@ -134,7 +134,10 @@ module.exports = function (app) {
             }
         })
             .then(() => {
-                res.status(200).json({ admin: "User was successfully deleted." })
+                res.status(200).json({
+                    msg: "User was successfully deleted.",
+                    success: true
+                })
             })
             .catch(err => {
                 console.log(err);
