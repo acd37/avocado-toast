@@ -3,23 +3,31 @@ import {
     GET_PROFILE,
     GET_ERRORS,
     SET_CURRENT_USER,
+    LOADING,
+    REMOVE_LOADING
 } from './types';
 
 // get current profile
 export const getCurrentProfile = () => dispatch => {
+    // dispatch(setIsLoading());
     axios
         .get('/api/users')
-        .then(res =>
+        .then(res => {
+
             dispatch({
                 type: GET_PROFILE,
                 payload: res.data
             })
+        }
+
         )
-        .catch(err =>
+        .catch(err => {
             dispatch({
                 type: GET_PROFILE,
                 payload: {}
             })
+        }
+
         );
 };
 
@@ -120,3 +128,32 @@ export const addIncome = incomeData => dispatch => {
             console.log(err)
         })
 }
+
+// release funds
+export const releaseFunds = releaseData => dispatch => {
+    console.log('release data', releaseData)
+    axios.put('/api/categories/release', releaseData)
+
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+
+export const setIsLoading = () => {
+    return {
+        type: LOADING
+    };
+};
+
+export const removeLoading = () => {
+    return {
+        type: REMOVE_LOADING
+    };
+};

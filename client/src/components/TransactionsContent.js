@@ -4,6 +4,9 @@ import Header from './common/Header';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import 'moment-timezone';
+import Button from '@material-ui/core/Button';
+import TransactionDialog from './TransactionDialog';
+
 
 const styles = {
     transaction: {
@@ -15,10 +18,24 @@ const styles = {
         marginBottom: 10,
         boxShadow: '0 12px 15px rgba(0,0,0,0.1), 0 17px 50px rgba(0,0,0,0.1)',
         borderRadius: '0.375rem',
+    },
+    contentWrapper: {
+        marginTop: 20,
+        marginBottom: 20
     }
 }
 
 class TransactionsContent extends Component {
+
+    state = {
+        showTransactionDialog: false
+    }
+
+    handleCloseTransactionDialog = () => {
+        this.setState({ showTransactionDialog: false })
+    }
+
+
     render() {
         const { Transactions } = this.props.profile.profile;
 
@@ -55,7 +72,19 @@ class TransactionsContent extends Component {
             <div>
                 <Header text="Transactions" />
 
-                {content}
+                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <Button style={styles.button} onClick={() => this.setState({ showTransactionDialog: true })}> Add Transaction </Button>
+                </div>
+
+                <TransactionDialog
+                    handleClose={this.handleCloseTransactionDialog}
+                    open={this.state.showTransactionDialog}
+                />
+
+                <div style={styles.contentWrapper}>
+                    {content}
+                </div>
+
 
             </div>
         )

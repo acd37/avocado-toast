@@ -200,4 +200,56 @@ module.exports = function (app) {
 
             })
     })
+
+
+
+
+    // @route PUT api/categories/load
+    // @desc  moves funds to a category from unbudgeted amount (user.remainingBalance)
+    app.put("/api/categories/release", passport.authenticate('jwt', { session: false }), (req, res) => {
+
+
+
+        db.Category.findOne({
+            where: {
+                category_id: req.body.CategoryId
+            }
+        }).then(category => {
+            let newBalance = parseFloat(category.amount) - parseFloat(req.body.releaseAmount);
+            category.update({
+                amount: newBalance
+            })
+
+            db.User.findOne({
+                where: {
+                    id: category.UserId
+                }
+            }).then(user => {
+                let newBalance = parseFloat(user.remainingBalance) + parseFloat(req.body.releaseAmount);
+                user.update({
+                    remainingBalance: newBalance
+                })
+                    .then(() => {
+                        return db.User.findOne({
+                            where: {
+                                id: req.user.id
+                            },
+                            include: [
+                                { model: db.Transaction },
+                                { model: db.Category }
+                            ]
+                        })
+                            .then((user) => res.json(user))
+
+
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            })
+                .catch(err => {
+                    console.log(err)
+                })
+        })
+    })
 }

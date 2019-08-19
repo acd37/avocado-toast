@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import Navbar from './Navbar';
 import { Drawer, Button, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { logoutUser } from '../../actions/authActions';
+import { resetUser } from '../../actions/profileActions';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import AttachMoney from '@material-ui/icons/AttachMoney';
+import AllInclusive from '@material-ui/icons/AllInclusive';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import { connect } from 'react-redux';
+import Divider from '@material-ui/core/Divider';
 
 
 const drawerWidth = 300;
@@ -61,8 +65,18 @@ class AppDrawer extends Component {
     };
 
     handleLogout = (e) => {
-        e.preventDefault();
-        this.props.logoutUser(this.props.history);
+
+        let confirmation = window.confirm("Are you sure you want to logout?");
+        if (confirmation) {
+            this.props.logoutUser(this.props.history);
+        }
+    }
+
+    handleResetUser = () => {
+        let confirmation = window.confirm("Are you sure you're ready to reset the month?");
+        if (confirmation) {
+            this.props.resetUser();
+        }
     }
 
 
@@ -73,14 +87,13 @@ class AppDrawer extends Component {
             <div className={classes.toolbar}>
                 <img src={require('../../assets/images/logo.png')} className={classes.logoImage} alt="logo" />
                 <Typography variant="h6" gutterBottom className={classes.welcomeMessage}>
-                    <p>Welcome, {this.props.user.firstName}! </p>
-                    <Button onClick={this.handleLogout} className={classes.logoutButton}>Logout</Button>
+                    <p>AvocadoToast</p>
                 </Typography>
                 <List dense>
                     <Link className={classes.link} to="/dashboard">
                         <ListItem button >
                             <Home style={{ marginRight: 16 }} />
-                            <ListItemText primary="Budget" />
+                            <ListItemText primary="Dashboard" />
                         </ListItem>
                     </Link>
 
@@ -97,11 +110,19 @@ class AppDrawer extends Component {
                             <ListItemText primary="Settings" />
                         </ListItem>
                     </Link>
-
-
-
-
-
+                    <Link className={classes.link} onClick={this.handleResetUser}>
+                        <ListItem button >
+                            <AllInclusive style={{ marginRight: 16 }} />
+                            <ListItemText primary="Reset" />
+                        </ListItem>
+                    </Link>
+                    <Divider />
+                    <Link className={classes.link} onClick={this.handleLogout}>
+                        <ListItem button >
+                            <ExitToApp style={{ marginRight: 16 }} />
+                            <ListItemText primary="Logout" />
+                        </ListItem>
+                    </Link>
                 </List >
 
             </div >
@@ -148,4 +169,4 @@ const mapStateToProps = state => ({
     user: state.auth.user,
 })
 
-export default connect(mapStateToProps, { logoutUser })(withStyles(styles)(AppDrawer));
+export default connect(mapStateToProps, { logoutUser, resetUser })(withStyles(styles)(AppDrawer));

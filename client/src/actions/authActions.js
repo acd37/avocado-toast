@@ -3,7 +3,7 @@ import setAuthToken from '../utils/setAuthToken';
 import jwtDecode from 'jwt-decode';
 
 
-import { GET_ERRORS, SET_CURRENT_USER } from './types';
+import { GET_ERRORS, SET_CURRENT_USER, LOADING, REMOVE_LOADING } from './types';
 
 // register
 export const registerUser = (userData, history) => dispatch => {
@@ -13,15 +13,16 @@ export const registerUser = (userData, history) => dispatch => {
             history.push('/')
         })
         .catch(err => {
-            dispatch({
-                type: GET_ERRORS,
-                payload: err.response.data
-            })
+            console.log(err)
         })
 }
 
 // login
 export const loginUser = userData => dispatch => {
+
+    dispatch(setIsLoading());
+
+
     // collect credential auth from BCS api
     axios.post('api/auth/login', userData)
         .then(res => {
@@ -41,6 +42,7 @@ export const loginUser = userData => dispatch => {
             dispatch(setCurrentUser(decoded));
         })
         .catch(err => {
+            dispatch(removeLoading());
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
@@ -71,6 +73,7 @@ export const loginUser = userData => dispatch => {
 
 // set logged in user
 export const setCurrentUser = decoded => dispatch => {
+    dispatch(removeLoading());
     dispatch({
         type: SET_CURRENT_USER,
         payload: decoded
@@ -88,4 +91,16 @@ export const logoutUser = history => dispatch => {
 
     // set current user to {}
     dispatch(setCurrentUser({}));
+};
+
+export const setIsLoading = () => {
+    return {
+        type: LOADING
+    };
+};
+
+export const removeLoading = () => {
+    return {
+        type: REMOVE_LOADING
+    };
 };

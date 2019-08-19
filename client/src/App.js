@@ -64,17 +64,36 @@ if (localStorage.budget) {
 
 class App extends Component {
   render() {
+    const { loading } = this.props.loading;
 
     return (
       <div className="App">
 
         <div className="application">
 
-          <Route exact path='/' component={Login} />
-          <Route exact path='/register' component={Register} />
-          <Switch>
-            <PrivateRoute path="/dashboard" component={Dashboard} />
-          </Switch>
+          {
+            loading ? (
+              <div style={styles.loadingWrapper}>
+                <img src={require('./assets/images/logo.png')} style={styles.logo} alt="cs logo" />
+                <p style={styles.loadingText}>
+                  Loading data...
+                  </p>
+                <LinearProgress style={styles.progress} color="primary" />
+              </div>
+            )
+
+              : (
+                <div>
+                  <Route exact path='/' component={Login} />
+                  <Route exact path='/register' component={Register} />
+                  <Switch>
+                    <PrivateRoute path="/dashboard" component={Dashboard} />
+                  </Switch>
+                </div>
+              )
+          }
+
+
 
         </div>
       </div >
@@ -84,7 +103,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  loading: state.auth.loading
+  loading: state.loading
 })
 
 export default connect(mapStateToProps, {})(withRouter(App));

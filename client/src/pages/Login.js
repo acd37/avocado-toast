@@ -190,7 +190,7 @@ class Login extends Component {
                     </FormControl>
 
                     <Button type="submit" style={styles.button} className="btn-primary">
-                        Submit
+                        Login
                     </Button>
 
                 </form>
