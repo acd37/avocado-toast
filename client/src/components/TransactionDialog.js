@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { createTransaction } from '../actions/profileActions';
+import { createTransaction } from '../actions/profileActions';
 
 
 import Button from '@material-ui/core/Button';
@@ -23,7 +23,7 @@ class TransactionDialog extends Component {
         success: ''
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
 
         if (nextProps.errors) {
             this.setState({
@@ -52,13 +52,16 @@ class TransactionDialog extends Component {
             UserId: this.props.auth.user.id
         }
 
-        if (this.props.profile.profile.remainingBalance < newTransaction.amount) {
-            alert("You don't have enough funds to make this transfer!")
-        } else {
-            this.props.handleClose();
-        }
-
-        // this.props.createTransaction(newTransaction);
+        // if (this.props.profile.profile.remainingBalance < newTransaction.amount) {
+        //     alert("You don't have enough funds to make this transfer!")
+        // } else {
+        this.setState({
+            description: '',
+            amount: ''
+        });
+        this.props.createTransaction(newTransaction);
+        this.props.handleClose();
+        // }
 
     }
 
@@ -134,4 +137,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 })
 
-export default connect(mapStateToProps, {})(TransactionDialog);
+export default connect(mapStateToProps, { createTransaction })(TransactionDialog);

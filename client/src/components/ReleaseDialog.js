@@ -17,7 +17,7 @@ class ReleaseDialog extends Component {
         amount: '0.00'
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
 
         if (nextProps.errors) {
             this.setState({

@@ -18,6 +18,8 @@ module.exports = function (app) {
             CategoryCategoryId: req.body.CategoryId
         };
 
+        console.log(newTransaction)
+
         db.Transaction.create(newTransaction)
             .then(() => {
                 db.Category.findOne({
@@ -26,26 +28,26 @@ module.exports = function (app) {
                     }
                 }).then(category => {
                     if (category) {
-                        let newBalance = parseFloat(category.amount) + parseFloat(req.body.amount);
+                        let newBalance = parseFloat(category.amount) - parseFloat(req.body.amount);
                         category.update({
                             amount: newBalance
+                        }).then(() => {
+                            db.User.findOne({
+                                where: {
+                                    id: req.body.UserId,
+                                },
+                                include: [
+                                    { model: db.Transaction },
+                                    { model: db.Category }
+                                ]
+                            })
+                                .then(user => {
+                                    console.log(user.Categories);
+                                    res.status(200).json(user)
+                                })
+                                .catch(err => console.log(err));
                         })
                     }
-
-                    db.User.findOne({
-                        where: {
-                            id: req.body.UserId,
-                        },
-                        include: [
-                            { model: db.Transaction },
-                            { model: db.Category }
-                        ]
-                    })
-                        .then(user => {
-                            console.log(user)
-                            res.status(200).json(user)
-                        })
-                        .catch(err => console.log(err));
                 }).catch(err => {
                     console.log(err);
                 })
@@ -89,15 +91,46 @@ module.exports = function (app) {
     // @route DELETE api/transactions/
     // @desc deletes a transaction
     app.delete('/api/transactions', passport.authenticate('jwt', { session: false }), (req, res) => {
-        db.Transaction.destroy({
+        db.Transaction.findOne({
             where: {
                 transaction_id: req.body.transaction_id
             }
         })
-            .then(() => {
-                res.status(200).json({ admin: "Transaction was successfully deleted." })
-            });
+            .then(transaction => {
+                console.log(transaction)
+                db.Category.findOne({
+                    where: {
+                        category_id: transaction.CategoryCategoryId
+                    }
+                }).then(category => {
+                    if (category) {
+                        let newBalance = parseFloat(category.amount) + parseFloat(transaction.amount);
+                        category.update({
+                            amount: newBalance
+                        }).then(() => {
+
+                            transaction.destroy().then(() => {
+                                db.User.findOne({
+                                    where: {
+                                        id: req.user.id
+                                    },
+                                    include: [
+                                        { model: db.Transaction },
+                                        { model: db.Category }
+                                    ]
+                                }).then(user => {
+                                    res.status(200).json(user);
+
+                                })
+                            })
+                        })
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            })
     });
+
 
 
 }

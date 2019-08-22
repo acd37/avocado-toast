@@ -21,7 +21,7 @@ class TransferDialog extends Component {
         amount: '0.00',
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
 
         if (nextProps.errors) {
             this.setState({
@@ -42,6 +42,8 @@ class TransferDialog extends Component {
     handleLoadFunds = (e) => {
         e.preventDefault();
 
+
+
         const loadFunds = {
             transferAmount: this.state.amount,
             CategoryId: this.state.category,
@@ -50,9 +52,9 @@ class TransferDialog extends Component {
 
         if (!loadFunds.CategoryId) {
             alert("You must select a category to transfer to.")
-        } else if (loadFunds.transferAmount < 0.01) {
+        } else if (parseFloat(loadFunds.transferAmount) < 0.01) {
             alert("Minimum transfer amount is $0.01")
-        } else if (this.props.profile.profile.remainingBalance < loadFunds.transferAmount) {
+        } else if (parseFloat(this.props.profile.profile.remainingBalance) < parseFloat(loadFunds.transferAmount)) {
             alert("You don't have the available funds to make this transfer.")
         } else {
             this.setState({

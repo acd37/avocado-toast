@@ -17,7 +17,7 @@ class CategoryDialog extends Component {
         errors: {}
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
 
         if (nextProps.errors) {
             this.setState({

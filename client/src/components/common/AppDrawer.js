@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar';
-import { Drawer, Button, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Drawer, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { logoutUser } from '../../actions/authActions';
 import { resetUser } from '../../actions/profileActions';
 import { withStyles } from '@material-ui/core/styles';
@@ -110,19 +110,15 @@ class AppDrawer extends Component {
                             <ListItemText primary="Settings" />
                         </ListItem>
                     </Link>
-                    <Link className={classes.link} onClick={this.handleResetUser}>
-                        <ListItem button >
-                            <AllInclusive style={{ marginRight: 16 }} />
-                            <ListItemText primary="Reset" />
-                        </ListItem>
-                    </Link>
+                    <ListItem button onClick={this.handleResetUser}>
+                        <AllInclusive style={{ marginRight: 16 }} />
+                        <ListItemText primary="Reset" />
+                    </ListItem>
                     <Divider />
-                    <Link className={classes.link} onClick={this.handleLogout}>
-                        <ListItem button >
-                            <ExitToApp style={{ marginRight: 16 }} />
-                            <ListItemText primary="Logout" />
-                        </ListItem>
-                    </Link>
+                    <ListItem button onClick={this.handleLogout}>
+                        <ExitToApp style={{ marginRight: 16 }} />
+                        <ListItemText primary="Logout" />
+                    </ListItem>
                 </List >
 
             </div >

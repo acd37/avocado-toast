@@ -17,49 +17,37 @@ module.exports = function (app) {
                 }
             }
         ).then(() => {
-            db.User.update({
-                remainingBalance: 0
-            },
-                {
-                    where: {
-                        id: req.user.id
-                    }
-                }).then(() => {
-                    db.User.findOne({
+
+            db.Transaction.destroy({
+                where: {
+                    UserId: req.user.id
+                }
+            }).then(() => {
+                db.User.update({
+                    remainingBalance: 0
+                },
+                    {
                         where: {
                             id: req.user.id
-                        },
-                        include: [
-                            { model: db.Transaction },
-                            { model: db.Category }
-                        ]
-                    }).then(user => {
-                        res.status(200).json(user);
+                        }
+                    }).then(() => {
+                        db.User.findOne({
+                            where: {
+                                id: req.user.id
+                            },
+                            include: [
+                                { model: db.Transaction },
+                                { model: db.Category }
+                            ]
+                        }).then(user => {
+                            res.status(200).json(user);
+                        })
+
                     })
 
-                })
-
+            })
         })
     })
-
-    // @route GET all categories
-    // @desc gets all categories
-    // app.get('/api/categories', passport.authenticate('jwt', { session: false }), (req, res) => {
-    //     db.Category.findAll({
-    //         where: {
-    //             UserId: req.user.id
-    //         }
-    //     }).then(categories => {
-    //         if (!categories) {
-    //             res.status(404) > json({
-    //                 categories: "No categories found for this user."
-    //             })
-    //         } else {
-    //             res.status(200).json(categories)
-    //         }
-
-    //     })
-    // })
 
     // @route POST api/categories/
     // @desc creates a new category

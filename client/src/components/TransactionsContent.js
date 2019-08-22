@@ -6,7 +6,7 @@ import Moment from 'react-moment';
 import 'moment-timezone';
 import Button from '@material-ui/core/Button';
 import TransactionDialog from './TransactionDialog';
-
+import { deleteTransaction } from '../actions/profileActions';
 
 const styles = {
     transaction: {
@@ -14,7 +14,7 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         border: 'none',
-        padding: '5px 20px',
+        padding: '0px 20px',
         marginBottom: 10,
         boxShadow: '0 12px 15px rgba(0,0,0,0.1), 0 17px 50px rgba(0,0,0,0.1)',
         borderRadius: '0.375rem',
@@ -35,6 +35,12 @@ class TransactionsContent extends Component {
         this.setState({ showTransactionDialog: false })
     }
 
+    handleDelete = (transaction) => {
+        let userConfirmation = window.confirm("Are you sure you want to delete this transaction?")
+        if (userConfirmation) {
+            this.props.deleteTransaction(transaction.transaction_id);
+        }
+    }
 
     render() {
         const { Transactions } = this.props.profile.profile;
@@ -54,6 +60,7 @@ class TransactionsContent extends Component {
                                     style={{ height: 16, marginRight: 20, cursor: 'pointer' }}
                                 />
                                 {transaction.description} <span style={{ fontSize: '0.7rem', marginLeft: 30 }}>[<Moment date={transaction.createdAt} format="MMM Do, YYYY" />]</span>
+
                             </p>
                         </div>
                         <div>
@@ -97,4 +104,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 })
 
-export default connect(mapStateToProps, {})(TransactionsContent);
+export default connect(mapStateToProps, { deleteTransaction })(TransactionsContent);

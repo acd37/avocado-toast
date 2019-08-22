@@ -91,7 +91,10 @@ module.exports = function (app) {
             include: [
                 { model: db.Transaction },
                 { model: db.Category }
-            ]
+            ],
+            order: [[
+                db.Category, 'description', 'asc'
+            ]]
         })
             .then(user => {
                 res.status(200).json(user)

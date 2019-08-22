@@ -4,24 +4,23 @@ import {
     GET_ERRORS,
     SET_CURRENT_USER,
     LOADING,
-    REMOVE_LOADING
+    REMOVE_LOADING,
+    PROFILE_LOADING
 } from './types';
 
 // get current profile
 export const getCurrentProfile = () => dispatch => {
-    // dispatch(setIsLoading());
+    dispatch(setIsLoading());
     axios
         .get('/api/users')
         .then(res => {
-
             dispatch({
                 type: GET_PROFILE,
                 payload: res.data
             })
-        }
-
-        )
+        })
         .catch(err => {
+            // dispatch(removeLoading());
             dispatch({
                 type: GET_PROFILE,
                 payload: {}
@@ -145,10 +144,44 @@ export const releaseFunds = releaseData => dispatch => {
         })
 }
 
+// create category
+export const createTransaction = transactionData => dispatch => {
+
+    axios.post('/api/transactions', transactionData)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err.response.data)
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response.data
+            })
+        })
+}
+
+export const deleteTransaction = transactionData => dispatch => {
+
+    let data = {
+        transaction_id: transactionData
+    }
+
+    axios.delete('/api/transactions', { data: data })
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data
+            })
+        })
+}
+
 
 export const setIsLoading = () => {
     return {
-        type: LOADING
+        type: PROFILE_LOADING
     };
 };
 

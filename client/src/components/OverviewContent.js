@@ -19,12 +19,12 @@ const styles = {
         background: '#fff',
         borderRadius: '0.375rem',
         boxShadow: '0 12px 15px rgba(0,0,0,0.1), 0 17px 50px rgba(0,0,0,0.1)',
-        // display: 'flex',
-        flexDirection: 'column',
         padding: 15,
         boxSizing: 'border-box',
         marginRight: 10,
-        width: '100%'
+        marginTop: 10,
+        width: 400,
+        maxWidth: '90%'
     },
     row: {
         margin: 5
@@ -34,7 +34,7 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         border: 'none',
-        padding: '5px 20px',
+        padding: '0px 20px',
         marginBottom: 10,
         boxShadow: '0 12px 15px rgba(0,0,0,0.1), 0 17px 50px rgba(0,0,0,0.1)',
         borderRadius: '0.375rem',
@@ -42,7 +42,6 @@ const styles = {
 }
 
 class OverviewContent extends Component {
-
     state = {
         showCategoryDialog: false,
         showTransferMoneyDialog: false,
@@ -50,8 +49,6 @@ class OverviewContent extends Component {
         showIncomeDialog: false,
         showReleaseDialog: false
     }
-
-
 
     handleCloseIncomeDialog = () => {
         this.setState({ showIncomeDialog: false })
@@ -79,8 +76,6 @@ class OverviewContent extends Component {
             this.props.deleteCategory(category.category_id);
         }
     }
-
-
 
     render() {
 
@@ -115,16 +110,16 @@ class OverviewContent extends Component {
                 />
 
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
                     <div style={styles.card}>
                         <h2>To-be-budgeted</h2>
-                        <h2>${parseFloat(remainingBalance).toFixed(2)}</h2>
+                        <h2>{parseFloat(remainingBalance).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</h2>
                         <Button onClick={() => this.setState({ showTransferDialog: true })}> Transfer Money </Button>
 
                     </div>
                     <div style={styles.card}>
                         <h2>Balance</h2>
-                        <h2>${parseFloat(totalRemainingBalance).toFixed(2)} </h2>
+                        <h2>{parseFloat(totalRemainingBalance).toLocaleString('en-US', { style: 'currency', currency: 'USD' })} </h2>
                         <Button style={{ display: 'inline' }} onClick={() => this.setState({ showIncomeDialog: true })}> + Income </Button>
                     </div>
 
