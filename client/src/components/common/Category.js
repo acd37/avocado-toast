@@ -52,7 +52,7 @@ class Category extends Component {
                         </p>
                     </div>
                     <div>
-                        <p>${category.amount}
+                        <p>{parseFloat(category.amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                             <img src={require('../../assets/images/unlocked.png')} alt="release funds" onClick={() => this.setState({ showReleaseDialog: true, category: category.category_id })} style={{ height: 20, marginLeft: 20, cursor: 'pointer' }} />
                         </p>
                     </div>

@@ -13,7 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 class IncomeDialog extends Component {
 
     state = {
-        amount: '0.00',
+        amount: '',
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -43,7 +43,7 @@ class IncomeDialog extends Component {
         }
 
         this.setState({
-            amount: '0.00',
+            amount: '',
         })
         this.props.addIncome(newTransaction);
         this.props.handleClose();
@@ -54,10 +54,11 @@ class IncomeDialog extends Component {
         return (
             <div>
 
-                <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Add Income</DialogTitle>
                     <DialogContent>
                         <TextField
+                            autoFocus
                             margin="dense"
                             id="name"
                             label="Amount"

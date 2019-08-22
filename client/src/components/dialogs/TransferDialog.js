@@ -18,7 +18,7 @@ class TransferDialog extends Component {
 
     state = {
         category: '',
-        amount: '0.00',
+        amount: '',
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -59,7 +59,7 @@ class TransferDialog extends Component {
         } else {
             this.setState({
                 category: '',
-                amount: '0.00',
+                amount: '',
             })
             this.props.loadFunds(loadFunds);
             this.props.handleClose();
@@ -73,7 +73,7 @@ class TransferDialog extends Component {
         return (
             <div>
 
-                <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Transfer Funds</DialogTitle>
                     <DialogContent>
                         <FormControl fullWidth>

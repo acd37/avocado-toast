@@ -4,12 +4,11 @@ const styles = {
     header: {
         fontSize: '3em',
         color: '#404040',
-        // textTransform: 'uppercase',
-        fontWeight: 200,
-        fontFamily: 'Lato'
+        fontWeight: 300,
+        fontFamily: 'Lato',
+        marginBottom: 10
     }
 }
-
 
 class Header extends Component {
     render() {

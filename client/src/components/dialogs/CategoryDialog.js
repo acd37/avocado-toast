@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createCategory } from '../../actions/profileActions';
-
-
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -47,7 +45,7 @@ class CategoryDialog extends Component {
         return (
             <div>
 
-                <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Add Category</DialogTitle>
                     <DialogContent>
                         <TextField

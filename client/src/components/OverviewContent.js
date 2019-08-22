@@ -36,15 +36,14 @@ class OverviewContent extends Component {
                 <BudgetOverview />
 
                 <div style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'column' }} >
-                    <h1>Budget Categories</h1>
+                    <Header text="Categories" />
                     {
                         Categories.map(category => (
                             <Category category={category} />
                         ))
                     }
                 </div>
-                <Button
-                    onClick={() => this.setState({ showCategoryDialog: true })}> + Add New </Button>
+                <Button onClick={() => this.setState({ showCategoryDialog: true })}> + Add New </Button>
 
             </div >
         )

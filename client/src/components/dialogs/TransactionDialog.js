@@ -18,7 +18,7 @@ class TransactionDialog extends Component {
 
     state = {
         category: '',
-        amount: '0.00',
+        amount: '',
         description: '',
         success: ''
     }
@@ -44,24 +44,18 @@ class TransactionDialog extends Component {
     handleSubmitTransaction = (e) => {
         e.preventDefault();
 
-
         const newTransaction = {
             description: this.state.description,
             amount: this.state.amount,
             CategoryId: this.state.category,
             UserId: this.props.auth.user.id
         }
-
-        // if (this.props.profile.profile.remainingBalance < newTransaction.amount) {
-        //     alert("You don't have enough funds to make this transfer!")
-        // } else {
         this.setState({
             description: '',
             amount: ''
         });
         this.props.createTransaction(newTransaction);
         this.props.handleClose();
-        // }
 
     }
 
@@ -71,7 +65,7 @@ class TransactionDialog extends Component {
         return (
             <div>
 
-                <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
+                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
                     <DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
                     <DialogContent>
                         <TextField
