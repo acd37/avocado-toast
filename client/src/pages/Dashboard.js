@@ -73,7 +73,6 @@ class Dashboard extends Component {
                         <PrivateRoute exact path="/dashboard/transactions" component={TransactionsContent} />
                     </main>
                 </div>
-
             )
         }
 

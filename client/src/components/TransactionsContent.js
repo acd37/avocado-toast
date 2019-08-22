@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import Button from '@material-ui/core/Button';
-import TransactionDialog from './TransactionDialog';
+import TransactionDialog from './dialogs/TransactionDialog';
 import { deleteTransaction } from '../actions/profileActions';
 
 const styles = {

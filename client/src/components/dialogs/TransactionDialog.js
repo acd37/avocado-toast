@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { loadFunds } from '../actions/profileActions';
+import { createTransaction } from '../../actions/profileActions';
 
 
 import Button from '@material-ui/core/Button';
@@ -14,11 +14,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
-class TransferDialog extends Component {
+class TransactionDialog extends Component {
 
     state = {
         category: '',
         amount: '0.00',
+        description: '',
+        success: ''
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -39,31 +41,27 @@ class TransferDialog extends Component {
         console.log(e.target)
     };
 
-    handleLoadFunds = (e) => {
+    handleSubmitTransaction = (e) => {
         e.preventDefault();
 
 
-
-        const loadFunds = {
-            transferAmount: this.state.amount,
+        const newTransaction = {
+            description: this.state.description,
+            amount: this.state.amount,
             CategoryId: this.state.category,
             UserId: this.props.auth.user.id
         }
 
-        if (!loadFunds.CategoryId) {
-            alert("You must select a category to transfer to.")
-        } else if (parseFloat(loadFunds.transferAmount) < 0.01) {
-            alert("Minimum transfer amount is $0.01")
-        } else if (parseFloat(this.props.profile.profile.remainingBalance) < parseFloat(loadFunds.transferAmount)) {
-            alert("You don't have the available funds to make this transfer.")
-        } else {
-            this.setState({
-                category: '',
-                amount: '0.00',
-            })
-            this.props.loadFunds(loadFunds);
-            this.props.handleClose();
-        }
+        // if (this.props.profile.profile.remainingBalance < newTransaction.amount) {
+        //     alert("You don't have enough funds to make this transfer!")
+        // } else {
+        this.setState({
+            description: '',
+            amount: ''
+        });
+        this.props.createTransaction(newTransaction);
+        this.props.handleClose();
+        // }
 
     }
 
@@ -74,8 +72,19 @@ class TransferDialog extends Component {
             <div>
 
                 <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Transfer Funds</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add Transaction</DialogTitle>
                     <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Description"
+                            type="text"
+                            name="description"
+                            fullWidth
+                            onChange={this.onChange}
+                            value={this.state.description}
+                        />
                         <FormControl fullWidth>
                             <InputLabel htmlFor="category">Category</InputLabel>
                             <Select
@@ -112,7 +121,7 @@ class TransferDialog extends Component {
                         <Button onClick={this.props.handleClose}>
                             Cancel
                   </Button>
-                        <Button onClick={this.handleLoadFunds}>
+                        <Button onClick={this.handleSubmitTransaction}>
                             Submit
                   </Button>
                     </DialogActions>
@@ -128,4 +137,4 @@ const mapStateToProps = state => ({
     profile: state.profile
 })
 
-export default connect(mapStateToProps, { loadFunds })(TransferDialog);
+export default connect(mapStateToProps, { createTransaction })(TransactionDialog);

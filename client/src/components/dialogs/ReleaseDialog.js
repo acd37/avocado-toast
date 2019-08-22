@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { releaseFunds } from '../actions/profileActions';
+import { releaseFunds } from '../../actions/profileActions';
 
 
 import Button from '@material-ui/core/Button';

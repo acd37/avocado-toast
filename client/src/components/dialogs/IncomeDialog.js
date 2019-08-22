@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createCategory } from '../actions/profileActions';
+import { addIncome } from '../../actions/profileActions';
 
 
 import Button from '@material-ui/core/Button';
@@ -10,11 +10,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-class CategoryDialog extends Component {
+class IncomeDialog extends Component {
 
     state = {
-        description: '',
-        errors: {}
+        amount: '0.00',
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -30,36 +29,43 @@ class CategoryDialog extends Component {
         this.setState({ [e.target.name]: e.target.value });
     };
 
-    handleSubmitCategory = (e) => {
+    onCategoryChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+        console.log(e.target)
+    };
+
+    handleAddIncome = (e) => {
         e.preventDefault();
-        const newCategory = {
-            description: this.state.description,
+
+        const newTransaction = {
+            amount: this.state.amount,
             UserId: this.props.auth.user.id
         }
-        this.props.createCategory(newCategory);
+
         this.setState({
-            description: ''
+            amount: '0.00',
         })
+        this.props.addIncome(newTransaction);
         this.props.handleClose();
     }
+
 
     render() {
         return (
             <div>
 
                 <Dialog open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Add Category</DialogTitle>
+                    <DialogTitle id="form-dialog-title">Add Income</DialogTitle>
                     <DialogContent>
                         <TextField
-                            autoFocus
                             margin="dense"
                             id="name"
-                            label="Description"
-                            type="text"
-                            name="description"
+                            label="Amount"
+                            type="number"
+                            name="amount"
                             fullWidth
                             onChange={this.onChange}
-                            value={this.state.description}
+                            value={this.state.amount}
                         />
                     </DialogContent>
 
@@ -70,12 +76,10 @@ class CategoryDialog extends Component {
                         <Button onClick={this.props.handleClose}>
                             Cancel
                   </Button>
-                        <Button onClick={this.handleSubmitCategory}>
+                        <Button onClick={this.handleAddIncome}>
                             Submit
                   </Button>
                     </DialogActions>
-                    {this.state.errors.categories ? this.state.errors.categories : ''}
-
                 </Dialog>
             </div>
         );
@@ -85,7 +89,7 @@ class CategoryDialog extends Component {
 const mapStateToProps = state => ({
     auth: state.auth,
     errors: state.errors,
-    categories: state.categories
+    profile: state.profile
 })
 
-export default connect(mapStateToProps, { createCategory })(CategoryDialog);
+export default connect(mapStateToProps, { addIncome })(IncomeDialog);
