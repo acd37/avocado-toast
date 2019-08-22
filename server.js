@@ -6,6 +6,7 @@ const chalk = require('chalk');
 const { morganConfig } = require('./config/morganConfig');
 const port = process.env.PORT || 5000;
 const app = express();
+const path = require('path');
 
 // Bodyparser
 app.use(bodyParser.urlencoded({ extended: false }));
