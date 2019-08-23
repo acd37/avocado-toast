@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { releaseFunds } from '../../actions/profileActions';
 
-
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,87 +10,82 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 class ReleaseDialog extends Component {
+	state = {
+		category: '',
+		amount: ''
+	};
 
-    state = {
-        category: '',
-        amount: ''
-    }
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
+	}
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+	onChange = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
 
-        if (nextProps.errors) {
-            this.setState({
-                errors: nextProps.errors
-            });
-        }
-    }
+	onCategoryChange = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+		console.log(e.target);
+	};
 
-    onChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
+	handleReleaseFunds = (e) => {
+		e.preventDefault();
 
-    onCategoryChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-        console.log(e.target)
-    };
+		const newTransaction = {
+			releaseAmount: this.state.amount,
+			UserId: this.props.auth.user.id,
+			CategoryId: this.props.category
+		};
 
-    handleReleaseFunds = (e) => {
-        e.preventDefault();
+		this.setState({
+			amount: ''
+		});
+		this.props.releaseFunds(newTransaction);
+		this.props.handleClose();
+	};
 
-        const newTransaction = {
-            releaseAmount: this.state.amount,
-            UserId: this.props.auth.user.id,
-            CategoryId: this.props.category
-        }
+	render() {
+		return (
+			<div>
+				<Dialog
+					fullWidth
+					open={this.props.open}
+					onClose={this.props.handleClose}
+					aria-labelledby="form-dialog-title"
+				>
+					<DialogTitle id="form-dialog-title">Release Funds</DialogTitle>
+					<DialogContent>
+						<TextField
+							margin="dense"
+							id="name"
+							label="Amount"
+							type="number"
+							name="amount"
+							fullWidth
+							onChange={this.onChange}
+							value={this.state.amount}
+						/>
+					</DialogContent>
 
-        this.setState({
-            amount: '',
-        })
-        this.props.releaseFunds(newTransaction);
-        this.props.handleClose();
-    }
-
-
-    render() {
-        return (
-            <div>
-
-                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Release Funds</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            margin="dense"
-                            id="name"
-                            label="Amount"
-                            type="number"
-                            name="amount"
-                            fullWidth
-                            onChange={this.onChange}
-                            value={this.state.amount}
-                        />
-                    </DialogContent>
-
-                    {
-                        this.state.success ? <p>this.state.success </p> : ''
-                    }
-                    <DialogActions>
-                        <Button onClick={this.props.handleClose}>
-                            Cancel
-                  </Button>
-                        <Button onClick={this.handleReleaseFunds}>
-                            Release
-                  </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
-        );
-    }
+					{this.state.success ? <p>this.state.success </p> : ''}
+					<DialogActions>
+						<Button onClick={this.props.handleClose}>Cancel</Button>
+						<Button onClick={this.handleReleaseFunds}>Release</Button>
+					</DialogActions>
+				</Dialog>
+			</div>
+		);
+	}
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    errors: state.errors,
-    profile: state.profile
-})
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+	errors: state.errors,
+	profile: state.profile
+});
 
 export default connect(mapStateToProps, { releaseFunds })(ReleaseDialog);

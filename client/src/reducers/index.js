@@ -6,9 +6,9 @@ import profileReducer from './profileReducer';
 import successReducer from './successReducer';
 
 export default combineReducers({
-    auth: authReducer,
-    errors: errorReducer,
-    profile: profileReducer,
-    loading: loadingReducer,
-    success: successReducer
+	auth: authReducer,
+	errors: errorReducer,
+	profile: profileReducer,
+	loading: loadingReducer,
+	success: successReducer
 });

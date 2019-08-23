@@ -9,81 +9,76 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 class CategoryDialog extends Component {
+	state = {
+		description: '',
+		errors: {}
+	};
 
-    state = {
-        description: '',
-        errors: {}
-    }
+	UNSAFE_componentWillReceiveProps(nextProps) {
+		if (nextProps.errors) {
+			this.setState({
+				errors: nextProps.errors
+			});
+		}
+	}
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
+	onChange = (e) => {
+		this.setState({ [e.target.name]: e.target.value });
+	};
 
-        if (nextProps.errors) {
-            this.setState({
-                errors: nextProps.errors
-            });
-        }
-    }
+	handleSubmitCategory = (e) => {
+		e.preventDefault();
+		const newCategory = {
+			description: this.state.description,
+			UserId: this.props.auth.user.id
+		};
+		this.props.createCategory(newCategory);
+		this.setState({
+			description: ''
+		});
+		this.props.handleClose();
+	};
 
-    onChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
-    };
+	render() {
+		return (
+			<div>
+				<Dialog
+					fullWidth
+					open={this.props.open}
+					onClose={this.props.handleClose}
+					aria-labelledby="form-dialog-title"
+				>
+					<DialogTitle id="form-dialog-title">Add Category</DialogTitle>
+					<DialogContent>
+						<TextField
+							autoFocus
+							margin="dense"
+							id="name"
+							label="Description"
+							type="text"
+							name="description"
+							fullWidth
+							onChange={this.onChange}
+							value={this.state.description}
+						/>
+					</DialogContent>
 
-    handleSubmitCategory = (e) => {
-        e.preventDefault();
-        const newCategory = {
-            description: this.state.description,
-            UserId: this.props.auth.user.id
-        }
-        this.props.createCategory(newCategory);
-        this.setState({
-            description: ''
-        })
-        this.props.handleClose();
-    }
-
-    render() {
-        return (
-            <div>
-
-                <Dialog fullWidth open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Add Category</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Description"
-                            type="text"
-                            name="description"
-                            fullWidth
-                            onChange={this.onChange}
-                            value={this.state.description}
-                        />
-                    </DialogContent>
-
-                    {
-                        this.state.success ? <p>this.state.success </p> : ''
-                    }
-                    <DialogActions>
-                        <Button onClick={this.props.handleClose}>
-                            Cancel
-                  </Button>
-                        <Button onClick={this.handleSubmitCategory}>
-                            Submit
-                  </Button>
-                    </DialogActions>
-                    {this.state.errors.categories ? this.state.errors.categories : ''}
-
-                </Dialog>
-            </div>
-        );
-    }
+					{this.state.success ? <p>this.state.success </p> : ''}
+					<DialogActions>
+						<Button onClick={this.props.handleClose}>Cancel</Button>
+						<Button onClick={this.handleSubmitCategory}>Submit</Button>
+					</DialogActions>
+					{this.state.errors.categories ? this.state.errors.categories : ''}
+				</Dialog>
+			</div>
+		);
+	}
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth,
-    errors: state.errors,
-    categories: state.categories
-})
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+	errors: state.errors,
+	categories: state.categories
+});
 
 export default connect(mapStateToProps, { createCategory })(CategoryDialog);

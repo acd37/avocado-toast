@@ -1,30 +1,33 @@
 {
-  "name": "budget",
-  "version": "1.0.0",
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "server.js",
-  "scripts": {
-    "client-install": "npm install --prefix client",
-    "start": "node server.js",
-    "server": "node server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-  },
-  "author": "acd37",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.2",
-    "chalk": "^2.4.2",
-    "concurrently": "^3.5.1",
-    "dotenv": "^8.0.0",
-    "express": "^4.16.3",
-    "jsonwebtoken": "^8.2.0",
-    "morgan": "^1.9.1",
-    "mysql2": "^1.6.5",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "sequelize": "^5.12.3"
-  }
+	"name": "budget",
+	"version": "1.0.0",
+	"description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+	"main": "server.js",
+	"scripts": {
+		"client-install": "npm install --prefix client",
+		"start": "node server.js",
+		"server": "node server.js",
+		"client": "npm start --prefix client",
+		"lint": "eslint --quiet .",
+		"fix": "eslint --fix .",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+	},
+	"author": "acd37",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.18.2",
+		"chalk": "^2.4.2",
+		"concurrently": "^3.5.1",
+		"dotenv": "^8.0.0",
+		"express": "^4.16.3",
+		"jsonwebtoken": "^8.2.0",
+		"morgan": "^1.9.1",
+		"mysql2": "^1.6.5",
+		"passport": "^0.4.0",
+		"passport-jwt": "^4.0.0",
+		"prettier": "^1.17.1",
+		"sequelize": "^5.12.3"
+	}
 }
