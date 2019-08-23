@@ -240,4 +240,49 @@ module.exports = function (app) {
                 })
         })
     })
+
+
+    app.get('/api/categories/reports', passport.authenticate('jwt', { session: false }), (req, res) => {
+
+        let reportsArr = [];
+
+        db.Category.findAll({
+            where: {
+                UserId: req.user.id
+            }
+        }).then(categories => {
+            for (let i = 0; i < categories.length; i++) {
+                reportsArr.push({
+                    categoryDescription: categories[i].description,
+                    id: categories[i].category_id,
+                    amountAvailable: categories[i].amount,
+                    amountSpent: 0
+                })
+            }
+        }).then(() => {
+            db.Transaction.findAll({
+                where: {
+                    UserId: req.user.id
+                }
+            }).then(transactions => {
+
+                for (let i = 0; i < transactions.length; i++) {
+                    for (let j = 0; j < reportsArr.length; j++) {
+                        if (transactions[i].CategoryCategoryId === reportsArr[j].id) {
+                            reportsArr[j].amountSpent += parseFloat(transactions[i].amount);
+                            // console.log(reportsArr[j].description)
+                        }
+                    }
+                }
+
+
+                res.json(reportsArr);
+
+
+            })
+        })
+
+    })
+
+
 }

@@ -7,6 +7,7 @@ import 'moment-timezone';
 import Button from '@material-ui/core/Button';
 import TransactionDialog from './dialogs/TransactionDialog';
 import { deleteTransaction } from '../actions/profileActions';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = {
     transaction: {
@@ -54,11 +55,13 @@ class TransactionsContent extends Component {
                     <div key={transaction.transaction_id} style={styles.transaction}>
                         <div>
                             <p>
-                                <img
-                                    src={require('../assets/images/garbage.png')}
-                                    onClick={() => this.handleDelete(transaction)}
-                                    style={{ height: 16, marginRight: 20, cursor: 'pointer' }}
-                                />
+                                <Tooltip title="Delete">
+                                    <img
+                                        src={require('../assets/images/garbage.png')}
+                                        onClick={() => this.handleDelete(transaction)}
+                                        style={{ height: 16, marginRight: 20, cursor: 'pointer' }}
+                                    />
+                                </Tooltip>
                                 {transaction.description} <span style={{ fontSize: '0.7rem', marginLeft: 30 }}>[<Moment date={transaction.createdAt} format="MMM Do, YYYY" />]</span>
 
                             </p>

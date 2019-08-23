@@ -128,23 +128,107 @@ module.exports = function (app) {
     })
 
 
-    // @route DELETE /api/users
+    // @route DELETE /api/users/
     // @desc delete a user
     app.delete('/api/users', passport.authenticate('jwt', { session: false }), (req, res) => {
-        db.User.destroy({
+
+        db.Category.destroy({
             where: {
-                id: req.user.id
+                UserId: req.user.id
+            }
+        }).then(() => {
+            db.User.destroy({
+                where: {
+                    id: req.user.id
+                }
+            })
+                .then(() => {
+                    res.status(200).json({
+                        msg: "User was successfully deleted.",
+                        success: true
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        })
+
+
+    })
+
+
+    // @route PUT /api/users/:id
+    // @desc update a user
+    app.put("/api/users/:id", passport.authenticate('jwt', { session: false }), (req, res) => {
+        db.User.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(user => {
+            console.log(user)
+            if (!user) {
+                return res.status(400).json({ user: "A user with this ID could not be found." })
+            } else {
+                const updatedUser = {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    email: req.body.email,
+                };
+
+                user.update(updatedUser)
+                    .then(user => {
+                        res.status(200).json({
+                            user,
+                            success: {
+                                profile: "Your user profile has been successfully updated!"
+                            }
+                        });
+                    })
+                    .catch(err => console.log(err));
+            };
+        }).catch(err => {
+            console.log(err)
+        })
+    });
+
+
+    // @route /api/users/password/:id
+    // @desc updates user password
+    app.put("/api/users/password/:id", passport.authenticate('jwt', { session: false }), (req, res) => {
+
+        db.User.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(user => {
+            if (!user) {
+                return res.status(400).json({ user: "A user with this ID could not be found." })
+            } else {
+                const updatedUser = {
+                    password: req.body.password
+                };
+
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(updatedUser.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        updatedUser.password = hash
+
+                        user.update(updatedUser)
+                            .then(user => {
+                                res.status(200).json({
+                                    user,
+                                    success: {
+                                        password: "Your password has been successfully updated!"
+                                    }
+                                });
+                            })
+                            .catch(err => console.log(err));
+
+                    });
+                });
             }
         })
-            .then(() => {
-                res.status(200).json({
-                    msg: "User was successfully deleted.",
-                    success: true
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    })
+    });
+
 }
 

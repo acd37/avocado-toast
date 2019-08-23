@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { deleteCategory } from '../../actions/profileActions';
 import { connect } from 'react-redux';
 import ReleaseDialog from '../dialogs/ReleaseDialog';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = {
     categoryLine: {
@@ -47,13 +48,17 @@ class Category extends Component {
                 <div key={category.category_id} style={styles.categoryLine}>
                     <div>
                         <p>
-                            <img src={require('../../assets/images/garbage.png')} alt="delete" onClick={() => this.handleDelete(category)} style={{ height: 16, marginRight: 20, cursor: 'pointer' }} />
+                            <Tooltip title="Delete">
+                                <img src={require('../../assets/images/garbage.png')} alt="delete" onClick={() => this.handleDelete(category)} style={{ height: 16, marginRight: 20, cursor: 'pointer' }} />
+                            </Tooltip>
                             {category.description}
                         </p>
                     </div>
                     <div>
                         <p>{parseFloat(category.amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
-                            <img src={require('../../assets/images/unlocked.png')} alt="release funds" onClick={() => this.setState({ showReleaseDialog: true, category: category.category_id })} style={{ height: 20, marginLeft: 20, cursor: 'pointer' }} />
+                            <Tooltip title="Release Funds">
+                                <img src={require('../../assets/images/unlocked.png')} alt="release funds" onClick={() => this.setState({ showReleaseDialog: true, category: category.category_id })} style={{ height: 20, marginLeft: 20, cursor: 'pointer' }} />
+                            </Tooltip>
                         </p>
                     </div>
 

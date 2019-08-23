@@ -3,9 +3,9 @@ import {
     GET_PROFILE,
     GET_ERRORS,
     SET_CURRENT_USER,
-    LOADING,
     REMOVE_LOADING,
-    PROFILE_LOADING
+    PROFILE_LOADING,
+    GET_SUCCESS_MESSAGE
 } from './types';
 
 // get current profile
@@ -96,6 +96,9 @@ export const deleteCategory = categoryData => dispatch => {
                 payload: res.data
             })
         })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 // load funds
@@ -175,6 +178,45 @@ export const deleteTransaction = transactionData => dispatch => {
                 type: GET_PROFILE,
                 payload: res.data
             })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+export const updateUserProfile = userData => dispatch => {
+
+    axios.put(`/api/users/${userData.id}`, userData)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data.user
+            })
+            dispatch({
+                type: GET_SUCCESS_MESSAGE,
+                payload: res.data.success
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+export const updateUserPassword = userData => dispatch => {
+
+    axios.put(`/api/users/password/${userData.id}`, userData)
+        .then(res => {
+            dispatch({
+                type: GET_PROFILE,
+                payload: res.data.user
+            })
+            dispatch({
+                type: GET_SUCCESS_MESSAGE,
+                payload: res.data.success
+            })
+        })
+        .catch(err => {
+            console.log(err);
         })
 }
 

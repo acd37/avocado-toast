@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import AppDrawer from '../components/common/AppDrawer';
 import PrivateRoute from '../components/common/PrivateRoute';
-import OverviewContent from '../components/OverviewContent'
-import SettingsContent from '../components/SettingsContent'
-import TransactionsContent from '../components/TransactionsContent'
+import OverviewContent from '../components/OverviewContent';
+import SettingsContent from '../components/SettingsContent';
+import TransactionsContent from '../components/TransactionsContent';
+import ReportContent from '../components/ReportContent';
+
 import { getCurrentProfile, deleteAccount } from '../actions/profileActions';
 import { LinearProgress } from '@material-ui/core/';
 
@@ -71,6 +73,7 @@ class Dashboard extends Component {
                         <PrivateRoute exact path="/dashboard" component={OverviewContent} />
                         <PrivateRoute exact path="/dashboard/settings" component={SettingsContent} />
                         <PrivateRoute exact path="/dashboard/transactions" component={TransactionsContent} />
+                        <PrivateRoute exact path="/dashboard/reports" component={ReportContent} />
                     </main>
                 </div>
             )

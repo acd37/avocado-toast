@@ -8,8 +8,9 @@ import { Link } from 'react-router-dom';
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import AttachMoney from '@material-ui/icons/AttachMoney';
-import AllInclusive from '@material-ui/icons/AllInclusive';
+import Refresh from '@material-ui/icons/Refresh';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import BarChart from '@material-ui/icons/BarChart';
 import { connect } from 'react-redux';
 import Divider from '@material-ui/core/Divider';
 
@@ -103,6 +104,13 @@ class AppDrawer extends Component {
                             <ListItemText primary="Transactions" />
                         </ListItem>
                     </Link>
+                    <Link className={classes.link} to="/dashboard/reports">
+                        <ListItem button >
+                            <BarChart style={{ marginRight: 16 }} />
+
+                            <ListItemText primary="Reports" />
+                        </ListItem>
+                    </Link>
                     <Link className={classes.link} to="/dashboard/settings">
                         <ListItem button >
                             <Settings style={{ marginRight: 16 }} />
@@ -111,7 +119,7 @@ class AppDrawer extends Component {
                         </ListItem>
                     </Link>
                     <ListItem button onClick={this.handleResetUser}>
-                        <AllInclusive style={{ marginRight: 16 }} />
+                        <Refresh style={{ marginRight: 16 }} />
                         <ListItemText primary="Reset" />
                     </ListItem>
                     <Divider />
