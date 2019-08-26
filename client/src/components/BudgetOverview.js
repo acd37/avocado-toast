@@ -5,8 +5,16 @@ import Button from '@material-ui/core/Button';
 import TransferDialog from './dialogs/TransferDialog';
 import IncomeDialog from './dialogs/IncomeDialog';
 import axios from 'axios';
+import { withStyles } from '@material-ui/styles';
+
 
 const styles = {
+	cardWrapper: {
+		display: 'flex',
+		justifyContent: 'flex-start',
+		flexWrap: 'wrap'
+	},
+
 	card: {
 		background: '#fff',
 		borderRadius: '0.375rem',
@@ -16,7 +24,13 @@ const styles = {
 		marginRight: 10,
 		marginTop: 10,
 		width: 350,
-		maxWidth: '90%'
+		maxWidth: '90%',
+	},
+	'@media (max-width: 599px)': {
+		card: {
+			width: '100%',
+			// margin: '0'
+		}
 	},
 	cardHeader: {
 		marginTop: 0,
@@ -61,6 +75,10 @@ class BudgetOverview extends Component {
 	};
 
 	render() {
+
+		const { classes } = this.props;
+
+
 		const { remainingBalance } = this.props.profile.profile;
 		const { Categories } = this.props.profile.profile;
 		const totalRemainingBalance = getRemainingBalance(Categories, remainingBalance);
@@ -71,9 +89,9 @@ class BudgetOverview extends Component {
 
 				<IncomeDialog handleClose={this.handleCloseIncomeDialog} open={this.state.showIncomeDialog} />
 
-				<div style={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-					<div style={styles.card}>
-						<h2 style={styles.cardHeader}>To Be Budgeted</h2>
+				<div className={classes.cardWrapper}>
+					<div className={classes.card}>
+						<h2 className={classes.cardHeader}>To Be Budgeted</h2>
 						<h2>
 							{parseFloat(remainingBalance).toLocaleString('en-US', {
 								style: 'currency',
@@ -82,8 +100,8 @@ class BudgetOverview extends Component {
 						</h2>
 						<Button onClick={() => this.setState({ showTransferDialog: true })}> Transfer Money </Button>
 					</div>
-					<div style={styles.card}>
-						<h2 style={styles.cardHeader}>Balance</h2>
+					<div className={classes.card}>
+						<h2 className={classes.cardHeader}>Balance</h2>
 						<h2>
 							{parseFloat(totalRemainingBalance).toLocaleString('en-US', {
 								style: 'currency',
@@ -95,8 +113,8 @@ class BudgetOverview extends Component {
 							+ Income{' '}
 						</Button>
 					</div>
-					<div style={styles.card}>
-						<h2 style={styles.cardHeader}>DOW: Daily Change</h2>
+					<div className={classes.card}>
+						<h2 className={classes.cardHeader}>DOW: Daily Change</h2>
 						<p>
 							{this.state.stockChange.length < 1 ? 'Loading data...' : <h2>{this.state.stockChange}</h2>}
 						</p>
@@ -113,4 +131,6 @@ const mapStateToProps = (state) => ({
 	profile: state.profile
 });
 
-export default connect(mapStateToProps, {})(BudgetOverview);
+export default connect(mapStateToProps, {})(
+	withStyles(styles)(BudgetOverview)
+);
