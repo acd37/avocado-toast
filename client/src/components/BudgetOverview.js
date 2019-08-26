@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import getRemainingBalance from '../utils/getRemainingBalance';
 import Button from '@material-ui/core/Button';
 import TransferDialog from './dialogs/TransferDialog';
 import IncomeDialog from './dialogs/IncomeDialog';
 import axios from 'axios';
 import { withStyles } from '@material-ui/styles';
-import PropTypes from 'prop-types';
 
 const styles = {
 	cardWrapper: {

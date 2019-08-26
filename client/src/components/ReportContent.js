@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './common/Header';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
@@ -65,17 +66,22 @@ class ReportContent extends Component {
 						<p>Sit tight. Loading data...</p>
 					</div>
 				) : (
-					<div style={styles.chartContainer}>
-						<Bar
-							data={this.state.data}
+						<div style={styles.chartContainer}>
+							<Bar
+								data={this.state.data}
 							// height={150}
 							// width={700}
-						/>
-					</div>
-				)}
+							/>
+						</div>
+					)}
 			</div>
 		);
 	}
+}
+
+ReportContent.propTypes = {
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({

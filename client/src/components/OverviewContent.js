@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Header from './common/Header';
 import CategoryDialog from './dialogs/CategoryDialog';
@@ -39,6 +40,11 @@ class OverviewContent extends Component {
 			</div>
 		);
 	}
+}
+
+OverviewContent.propTypes = {
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

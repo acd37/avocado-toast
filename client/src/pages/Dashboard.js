@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppDrawer from '../components/common/AppDrawer';
 import PrivateRoute from '../components/common/PrivateRoute';
@@ -73,6 +74,14 @@ class Dashboard extends Component {
 
 		return <div>{dashboardContent}</div>;
 	}
+}
+
+Dashboard.propTypes = {
+	user: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired,
+	deleteAccount: PropTypes.func.isRequired,
+	getCurrentProfile: PropTypes.func.isRequired,
+
 }
 
 const mapStateToProps = (state) => ({

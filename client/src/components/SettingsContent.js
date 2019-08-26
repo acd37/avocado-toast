@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './common/Header';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import { deleteAccount, updateUserProfile, updateUserPassword } from '../actions/profileActions';
@@ -182,6 +183,15 @@ class SettingsContent extends Component {
 			</div>
 		);
 	}
+}
+
+SettingsContent.propTypes = {
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired,
+	deleteAccount: PropTypes.func.isRequired,
+	updateUserProfile: PropTypes.func.isRequired,
+	updateUserPassword: PropTypes.func.isRequired
+
 }
 
 const mapStateToProps = (state) => ({

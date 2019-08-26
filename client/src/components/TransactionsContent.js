@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Header from './common/Header';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import 'moment-timezone';
 import Button from '@material-ui/core/Button';
@@ -95,6 +96,13 @@ class TransactionsContent extends Component {
 		);
 	}
 }
+
+TransactionsContent.propTypes = {
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired,
+	deleteTransaction: PropTypes.func.isRequired,
+}
+
 
 const mapStateToProps = (state) => ({
 	auth: state.auth,
