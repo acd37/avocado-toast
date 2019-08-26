@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import { connect } from 'react-redux';
 import { LinearProgress } from '@material-ui/core/';
 import PrivateRoute from './components/common/PrivateRoute';
@@ -72,14 +71,14 @@ class App extends Component {
 							<LinearProgress style={styles.progress} color="primary" />
 						</div>
 					) : (
-						<div>
-							<Route exact path="/" component={Login} />
-							<Route exact path="/register" component={Register} />
-							<Switch>
-								<PrivateRoute path="/dashboard" component={Dashboard} />
-							</Switch>
-						</div>
-					)}
+							<div>
+								<Route exact path="/" component={Login} />
+								<Route exact path="/register" component={Register} />
+								<Switch>
+									<PrivateRoute path="/dashboard" component={Dashboard} />
+								</Switch>
+							</div>
+						)}
 				</div>
 			</div>
 		);
