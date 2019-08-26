@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
-import Navbar from './Navbar';
-import { Drawer, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// State Management
+import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
 import { resetUser } from '../../actions/profileActions';
-import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+
+// Components
+import { Drawer, Hidden, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Navbar from './Navbar';
+
+// Styles
 import Home from '@material-ui/icons/Home';
 import Settings from '@material-ui/icons/Settings';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import Refresh from '@material-ui/icons/Refresh';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import BarChart from '@material-ui/icons/BarChart';
-import { connect } from 'react-redux';
-import Divider from '@material-ui/core/Divider';
+import { withStyles } from '@material-ui/core/styles';
+
 
 const drawerWidth = 300;
 
@@ -157,6 +165,12 @@ class AppDrawer extends Component {
 			</div>
 		);
 	}
+}
+
+AppDrawer.propTypes = {
+	logoutUser: PropTypes.func.isRequired,
+	resetUser: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({

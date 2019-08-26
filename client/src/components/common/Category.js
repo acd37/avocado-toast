@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { deleteCategory } from '../../actions/profileActions';
 import { connect } from 'react-redux';
 import ReleaseDialog from '../dialogs/ReleaseDialog';
@@ -81,6 +82,11 @@ class Category extends Component {
 			</div>
 		);
 	}
+}
+
+Category.propTypes = {
+	deleteCategory: PropTypes.func.isRequired,
+	profile: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

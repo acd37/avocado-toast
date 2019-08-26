@@ -147,6 +147,7 @@ class SettingsContent extends Component {
 								label="Password"
 								type="password"
 								name="password"
+								autoComplete="new-password"
 								className={classes.textField}
 								value={this.state.password}
 								onChange={this.handleChange}
@@ -156,6 +157,7 @@ class SettingsContent extends Component {
 							<TextField
 								label="Retype Password"
 								type="password"
+								autoComplete="new-password"
 								name="password2"
 								className={classes.textField}
 								value={this.state.password2}

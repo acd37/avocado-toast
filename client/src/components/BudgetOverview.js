@@ -6,7 +6,7 @@ import TransferDialog from './dialogs/TransferDialog';
 import IncomeDialog from './dialogs/IncomeDialog';
 import axios from 'axios';
 import { withStyles } from '@material-ui/styles';
-
+import PropTypes from 'prop-types';
 
 const styles = {
 	cardWrapper: {
@@ -14,7 +14,14 @@ const styles = {
 		justifyContent: 'flex-start',
 		flexWrap: 'wrap'
 	},
-
+	cardHeader: {
+		marginTop: 0,
+		marginBottom: 5,
+		fontSize: '2em',
+		color: '#404040',
+		fontWeight: 300,
+		fontFamily: 'Lato'
+	},
 	card: {
 		background: '#fff',
 		borderRadius: '0.375rem',
@@ -29,20 +36,14 @@ const styles = {
 	'@media (max-width: 599px)': {
 		card: {
 			width: '100%',
-			// margin: '0'
 		}
-	},
-	cardHeader: {
-		marginTop: 0,
-		marginBottom: 5,
-		fontSize: '2em',
-		color: '#404040',
-		fontWeight: 300,
-		fontFamily: 'Lato'
 	}
 };
 
 class BudgetOverview extends Component {
+
+	_isMounted = false;
+
 	state = {
 		showTransferDialog: false,
 		showIncomeDialog: false,
@@ -50,20 +51,31 @@ class BudgetOverview extends Component {
 	};
 
 	componentDidMount() {
+		this._isMounted = true;
+
 		axios
 			.get('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=4JL5F2TIUB3E4EE8')
 			.then((response) => {
 				if (response.data['Global Quote']) {
-					let stockChange = response.data['Global Quote']['10. change percent'];
-					this.setState({
-						stockChange
-					});
+					if (this._isMounted) {
+						let stockChange = response.data['Global Quote']['10. change percent'];
+						this.setState({
+							stockChange
+						});
+					}
+
 				} else if (response.data['Note']) {
-					this.setState({
-						stockChange: 'No data'
-					});
+					if (this._isMounted) {
+						this.setState({
+							stockChange: 'No data'
+						});
+					}
 				}
 			});
+	}
+
+	componentWillUnmount() {
+		this._isMounted = false;
 	}
 
 	handleCloseIncomeDialog = () => {
@@ -77,16 +89,12 @@ class BudgetOverview extends Component {
 	render() {
 
 		const { classes } = this.props;
-
-
-		const { remainingBalance } = this.props.profile.profile;
-		const { Categories } = this.props.profile.profile;
+		const { remainingBalance, Categories } = this.props.profile.profile;
 		const totalRemainingBalance = getRemainingBalance(Categories, remainingBalance);
 
 		return (
 			<div>
 				<TransferDialog handleClose={this.handleCloseTransferDialog} open={this.state.showTransferDialog} />
-
 				<IncomeDialog handleClose={this.handleCloseIncomeDialog} open={this.state.showIncomeDialog} />
 
 				<div className={classes.cardWrapper}>
@@ -115,14 +123,19 @@ class BudgetOverview extends Component {
 					</div>
 					<div className={classes.card}>
 						<h2 className={classes.cardHeader}>DOW: Daily Change</h2>
-						<p>
+						<div>
 							{this.state.stockChange.length < 1 ? 'Loading data...' : <h2>{this.state.stockChange}</h2>}
-						</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		);
 	}
+}
+
+BudgetOverview.propTypes = {
+	auth: PropTypes.object.isRequired,
+	profile: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

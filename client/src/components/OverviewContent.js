@@ -33,7 +33,7 @@ class OverviewContent extends Component {
 
 				<div style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'column' }}>
 					<Header text="Categories" />
-					{Categories.map((category) => <Category category={category} />)}
+					{Categories.map((category) => <Category key={category.category_id} category={category} />)}
 				</div>
 				<Button onClick={() => this.setState({ showCategoryDialog: true })}> + Add New </Button>
 			</div>
