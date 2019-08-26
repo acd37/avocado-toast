@@ -103,7 +103,6 @@ class TransferDialog extends Component {
 TransferDialog.propTypes = {
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
-	categories: PropTypes.object.isRequired,
 	loadFunds: PropTypes.func.isRequired
 }
 

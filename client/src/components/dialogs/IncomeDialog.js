@@ -81,7 +81,6 @@ class IncomeDialog extends Component {
 IncomeDialog.propTypes = {
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
-	categories: PropTypes.object.isRequired,
 	addIncome: PropTypes.func.isRequired
 }
 

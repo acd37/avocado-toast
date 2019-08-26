@@ -83,7 +83,6 @@ class ReleaseDialog extends Component {
 ReleaseDialog.propTypes = {
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
-	categories: PropTypes.object.isRequired,
 	releaseFunds: PropTypes.func.isRequired
 }
 

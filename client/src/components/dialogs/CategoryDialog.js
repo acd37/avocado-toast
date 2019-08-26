@@ -76,7 +76,6 @@ class CategoryDialog extends Component {
 CategoryDialog.propTypes = {
 	auth: PropTypes.object.isRequired,
 	errors: PropTypes.object.isRequired,
-	categories: PropTypes.object.isRequired,
 	createCategory: PropTypes.func.isRequired
 }
 
