@@ -1,32 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { createTransaction } from '../../actions/profileActions';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, Select, InputLabel } from '@material-ui/core/';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 
 class TransactionDialog extends Component {
 	state = {
 		category: '',
 		amount: '',
 		description: '',
-		success: ''
+		success: '',
+		errors: {}
 	};
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
+	static getDerivedStateFromProps(props, state) {
+		if (props.errors !== state.errors) {
+			return {
+				errors: props.errors,
+			};
 		}
+		return null;
 	}
 
 	onChange = (e) => {
@@ -111,6 +105,13 @@ class TransactionDialog extends Component {
 	}
 }
 
+
+TransactionDialog.propTypes = {
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired,
+	categories: PropTypes.object.isRequired,
+	createTransaction: PropTypes.func.isRequired
+}
 const mapStateToProps = (state) => ({
 	auth: state.auth,
 	errors: state.errors,

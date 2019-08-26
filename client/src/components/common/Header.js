@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const styles = {
 	header: {
@@ -10,10 +11,12 @@ const styles = {
 	}
 };
 
-class Header extends Component {
-	render() {
-		return <h1 style={styles.header}>{this.props.text}</h1>;
-	}
+function Header(props) {
+	return <h1 style={styles.header}>{props.text}</h1>;
+}
+
+Header.propTypes = {
+	text: PropTypes.string.isRequired
 }
 
 export default Header;

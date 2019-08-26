@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { addIncome } from '../../actions/profileActions';
-
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core/';
 
 class IncomeDialog extends Component {
 	state = {
-		amount: ''
+		amount: '',
+		errors: {}
 	};
 
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.errors) {
-			this.setState({
-				errors: nextProps.errors
-			});
+	static getDerivedStateFromProps(props, state) {
+		if (props.errors !== state.errors) {
+			return {
+				errors: props.errors,
+			};
 		}
+		return null;
 	}
 
 	onChange = (e) => {
@@ -79,6 +76,13 @@ class IncomeDialog extends Component {
 			</div>
 		);
 	}
+}
+
+IncomeDialog.propTypes = {
+	auth: PropTypes.object.isRequired,
+	errors: PropTypes.object.isRequired,
+	categories: PropTypes.object.isRequired,
+	addIncome: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
