@@ -12,6 +12,12 @@ https://acd37-avocado-toast.herokuapp.com
 ## About
 * AvocadoToast is a proprietary budgeting system for home users.
 
+## Login Page
+<img src="./assets/screenshot1.png" alt="screenshot" />
+
+## Dashboard Page
+<img src="./assets/screenshot2.png" alt="screenshot" />
+
 ## License 
 * MIT
 
